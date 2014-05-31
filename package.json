@@ -14,5 +14,9 @@
     "test": "node index.js"
   },
   "author": "Jeff Malins",
-  "license": "ISC"
+  "license": "ISC",
+  "repository" : { 
+    "type" : "git", 
+    "url" : "http://github.com/IolaniDev/ioschedjs.git"
+  }
 }
