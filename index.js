@@ -1,12 +1,15 @@
 var ical  = require('ical'),
+    fs    = require('fs'),
     XDate = require('xdate'),
     express = require('express'),
     _ = require('lodash');
 
 var PORT = 3000;
 
-var app = express();
+var schedulePeriods = JSON.parse(fs.readFileSync('periods.json'));
+var cyclePeriods    = JSON.parse(fs.readFileSync('cycles.json'));
 
+var app = express();
 app.get('/:date?', function (req, res) {
 
   // get the argument date or today if absent //
@@ -58,16 +61,28 @@ app.get('/:date?', function (req, res) {
       .pluck('name')
       .map(function (name) {
         // remove random stuff in parens after schedule name //
-        var parIndex = name.indexOf(' (');
-        return parIndex >= 0? name.substring(0, parIndex): name;
+        var schedIndex = name.indexOf(' Schedule');
+        return schedIndex >= 0? name.substring(0, schedIndex): name;
       })
       .first();
 
-    res.json({
+    
+    var ret = {
         date: argdate.toString('yyyy-MM-dd'),
         cycle: cycleNumber,
         scheduleName: scheduleName
-      });
+      };
+    
+    // check for a matching (by name) schedule in the master file //
+    if(ret.scheduleName) {
+        ret.periodTimes = schedulePeriods[ret.scheduleName];
+    }
+    // check for cycle //
+    if(ret.cycle) {
+        ret.cyclePeriods = cyclePeriods[ret.cycle.toString()];
+    }
+    
+    res.json(ret);
   });
 });
 
