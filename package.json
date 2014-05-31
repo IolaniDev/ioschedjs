@@ -1,0 +1,18 @@
+{
+  "name": "iosched.js",
+  "version": "0.0.1",
+  "description": "`Iolani Schedule Query Service",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.3.2",
+    "ical": "^0.2.0",
+    "xdate": "^0.8.0",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Jeff Malins",
+  "license": "ISC"
+}
